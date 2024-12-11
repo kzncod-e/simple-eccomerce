@@ -1,6 +1,7 @@
 "use server";
 
 import { MyResponse } from "@/db/models/User";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const handelFormAction = async ({
@@ -21,10 +22,19 @@ export const handelFormAction = async ({
       "Content-Type": "application/json",
     },
   });
-  const responseJson: MyResponse<unknown> = await response.json();
+  const responseJson: MyResponse<string | undefined> = await response.json();
   if (!response.ok) {
     const message = responseJson.error ?? "something went wrong";
     return redirect(`/login?error=${encodeURIComponent(message)}`);
   }
+  const token: string = responseJson.data;
+  const cookieStore = await cookies();
+  cookieStore.set({
+    name: "token",
+    value: token,
+    httpOnly: true,
+    path: "/",
+  });
+  // console.log(token);
   redirect("/");
 };

@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { findUser, MyResponse } from "@/db/models/User";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+
 export const UserInputLoginSchema = z.object({
   email: z.string().email().min(1, " email is required"),
   password: z.string().min(1, "password is required"),
@@ -31,17 +32,19 @@ export const POST = async (request: Request) => {
   };
   const token = signToken(payload);
   const cookieStore = await cookies();
-  cookieStore.set("token", token, {
+  cookieStore.set({
+    name: "token",
+    value: token,
     httpOnly: true,
-    secure: false,
-    expires: new Date(Date.now() + 1000 * 60 * 120),
-    sameSite: "strict",
+    path: "/",
   });
+  // console.log(token);
+
   return NextResponse.json<MyResponse<unknown>>(
     {
       statusCode: 200,
       message: "login success",
-      data: user,
+      data: token,
     },
     { status: 200 }
   );

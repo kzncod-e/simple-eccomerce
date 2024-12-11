@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { MyResponse } from "@/db/models/User";
 import { Product } from "@/db/models/Product";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Cards from "@/components/Cards";
 
 // const categories = [
 //   { name: "Electronics", image: "/placeholder.svg?height=300&width=400" },
@@ -34,7 +36,6 @@ export default async function HomePage() {
     return data.data;
   };
   const products = await fetchProduct();
-  console.log(products);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -68,61 +69,15 @@ export default async function HomePage() {
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
               Featured Products
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {products &&
                 products.map((product) => (
-                  <Card key={product._id.toString()}>
-                    <CardHeader>
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        width={200}
-                        height={200}
-                        className="w-full h-[200px] object-cover"
-                      />
-                    </CardHeader>
-                    <CardContent>
-                      <CardTitle>{product.name}</CardTitle>
-                      <p className="text-2xl font-bold">
-                        ${Number(product.price).toFixed(2)}
-                      </p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button className="w-full">Add to Cart</Button>
-                    </CardFooter>
-                  </Card>
+                  <Cards key={product._id.toString()} {...product} />
                 ))}
             </div>
           </div>
         </section>
-        {/* <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
-              Shop by Category
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {categories.map((category, index) => (
-                <Card key={index} className="overflow-hidden">
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    width={400}
-                    height={300}
-                    className="w-full h-[200px] object-cover"
-                  />
-                  <CardContent className="p-4">
-                    <CardTitle className="text-xl mb-2">
-                      {category.name}
-                    </CardTitle>
-                    <Button variant="outline" className="w-full">
-                      Explore <ChevronRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section> */}
+
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
@@ -149,19 +104,7 @@ export default async function HomePage() {
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500">
-          © 2024 Acme Inc. All rights reserved.
-        </p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Terms of Service
-          </Link>
-          <Link className="text-xs hover:underline underline-offset-4" href="#">
-            Privacy
-          </Link>
-        </nav>
-      </footer>
+      <Footer />
     </div>
   );
 }

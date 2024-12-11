@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import handelFormAction from "./action";
+import handelFormAction from "../../../action/registerAction";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
