@@ -51,12 +51,22 @@ export const POST = async (request: Request) => {
         { status: 400 }
       );
     }
-    return NextResponse.json<MyResponse<never>>(
-      {
-        statusCode: 500,
-        error: err.message || "Internal Server Error",
-      },
-      { status: 500 }
-    );
+    if (err instanceof Error) {
+      return NextResponse.json<MyResponse<never>>(
+        {
+          statusCode: 500,
+          error: err.message || "Internal Server Error",
+        },
+        { status: 500 }
+      );
+    } else {
+      return NextResponse.json<MyResponse<never>>(
+        {
+          statusCode: 500,
+          error: "Internal Server Error",
+        },
+        { status: 500 }
+      );
+    }
   }
 };
