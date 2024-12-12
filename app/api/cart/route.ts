@@ -1,5 +1,6 @@
 import { addToCart } from "@/db/models/Cart";
 import { MyResponse } from "@/db/models/User";
+
 import { NextRequest, NextResponse } from "next/server";
 
 interface data {
@@ -10,6 +11,8 @@ export const POST = async (request: NextRequest) => {
   try {
     const data: data = await request.json();
     const newProductCart = await addToCart(data);
+    console.log(newProductCart);
+
     return NextResponse.json<MyResponse<unknown>>(
       {
         statusCode: 201,

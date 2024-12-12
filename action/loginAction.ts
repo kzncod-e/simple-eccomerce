@@ -27,14 +27,16 @@ export const handelFormAction = async ({
     const message = responseJson.error ?? "something went wrong";
     return redirect(`/login?error=${encodeURIComponent(message)}`);
   }
-  const token: string = responseJson.data;
-  const cookieStore = await cookies();
-  cookieStore.set({
-    name: "token",
-    value: token,
-    httpOnly: true,
-    path: "/",
-  });
+  const token = responseJson.data;
+  if (token) {
+    const cookieStore = await cookies();
+    cookieStore.set({
+      name: "token",
+      value: token,
+      httpOnly: true,
+      path: "/",
+    });
+  }
   // console.log(token);
   redirect("/");
 };

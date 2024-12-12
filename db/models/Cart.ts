@@ -1,7 +1,8 @@
 import { ObjectId } from "mongodb";
 import { getDb } from "../config";
+import { getProducts } from "./Product";
 
-export type productCarts = {
+export type ProductCarts = {
   _id: ObjectId;
   name: string;
   image: string;
@@ -26,7 +27,7 @@ export type myCart = {
   productId: ObjectId;
   createdAt: string;
   updatedAt: string;
-  productCarts: productCarts[];
+  productCarts: ProductCarts[];
 };
 export type cartInput = Omit<Cart, "_id">;
 
@@ -48,9 +49,9 @@ export const addToCart = async (cart: {
   const Cart = (await getCart()).insertOne(cartDoc);
   return Cart;
 };
-export const getProductCart = async (userId: string) => {
+export const getProductCart = async (userId: string): Promise<ProductCarts> => {
   const cart = await getCart();
-  const result = await cart
+  const result = (await cart
     .aggregate([
       {
         $match: {
@@ -60,12 +61,41 @@ export const getProductCart = async (userId: string) => {
       {
         $lookup: {
           from: "Product",
-          localField: "ProductId",
+          localField: "productId",
           foreignField: "_id",
           as: "productCarts",
         },
       },
     ])
-    .toArray();
+    .toArray()) as unknown as ProductCarts;
+  return result;
+};
+
+export const deleteProductFromCart = async (productId: string) => {
+  const cart = await getCart();
+  console.log(productId, ">>>>>>>>>>>>>>>>>>>>>>>");
+
+  const result = await cart.deleteOne({ productId: new ObjectId(productId) });
+  return result;
+};
+
+export const updateProductQuantity = async (
+  productId: string,
+  quantity: number
+) => {
+  const product = (await getDb()).collection("Product");
+  const currentDate = new Date().toISOString();
+  console.log(productId, quantity);
+
+  const result = await product.updateOne(
+    { _id: new ObjectId(productId) },
+    {
+      $set: {
+        quantity: Number(quantity),
+        updatedAt: currentDate,
+      },
+    }
+  );
+
   return result;
 };

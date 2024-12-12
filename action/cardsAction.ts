@@ -4,7 +4,6 @@ import { payload } from "@/components/Cards";
 import { Cart } from "@/db/models/Cart";
 import { MyResponse } from "@/db/models/User";
 import { verifToken } from "@/lib/jwt";
-import { ObjectId } from "mongodb";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -20,14 +19,11 @@ export async function getTokenData(): Promise<payload> {
   const tokenData = verifToken(token);
   return tokenData as payload;
 }
-interface handleAddToCart {
-  userId: string;
-  _id: ObjectId;
-}
-export const handleAddToCart = async (data: handleAddToCart) => {
+
+export const handleAddToCart = async (userId: string, productId: string) => {
   const response = await fetch("http://localhost:3000/api/cart", {
     method: "POST",
-    body: JSON.stringify(data),
+    body: JSON.stringify({ userId, productId }),
     headers: {
       "Content-Type": "application/json",
     },

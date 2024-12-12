@@ -18,7 +18,7 @@ export interface payload {
   email: string;
 }
 
-const Cards = ({ image, name, price, _id }: Product) => {
+const Cards = ({ product }: { product: Product }) => {
   const [token, setToken] = useState<payload>();
   const [userId, setUserId] = useState("");
   const getToken = async () => {
@@ -39,20 +39,22 @@ const Cards = ({ image, name, price, _id }: Product) => {
       <Card className="flex-col  flex justify-center">
         <CardHeader>
           <Image
-            src={image}
-            alt={name}
+            src={product?.image}
+            alt={product?.name}
             width={200}
             height={200}
             className="w-full h-[200px] object-cover"
           />
         </CardHeader>
         <CardContent>
-          <CardTitle>{name}</CardTitle>
-          <p className="text-2xl font-bold">${Number(price).toFixed(2)}</p>
+          <CardTitle>{product?.name}</CardTitle>
+          <p className="text-2xl font-bold">
+            ${Number(product?.price).toFixed(2)}
+          </p>
         </CardContent>
         <CardFooter>
           <Button
-            onClick={() => handleAddToCart({ userId, _id })}
+            onClick={() => handleAddToCart(userId, product._id.toString())}
             className="w-full">
             Add to Cart
           </Button>

@@ -1,15 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
-import { ShoppingCart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import { MyResponse } from "@/db/models/User";
 import { Product } from "@/db/models/Product";
@@ -17,7 +9,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Cards from "@/components/Cards";
 
-// const categories = [
 //   { name: "Electronics", image: "/placeholder.svg?height=300&width=400" },
 //   { name: "Clothing", image: "/placeholder.svg?height=300&width=400" },
 //   { name: "Home & Garden", image: "/placeholder.svg?height=300&width=400" },
@@ -72,7 +63,7 @@ export default async function HomePage() {
             <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {products &&
                 products.map((product) => (
-                  <Cards key={product._id.toString()} {...product} />
+                  <Cards key={product._id.toString()} product={product} />
                 ))}
             </div>
           </div>
