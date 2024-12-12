@@ -31,7 +31,7 @@ const HomePage = () => {
         const data: MyResponse<Product[]> = await response.json();
         setProducts(data.data || []); // Ensure it's always an array
       } catch (err) {
-        setError("Failed to load products");
+        console.log(`error happen while fetching product ${err}`);
       } finally {
         setLoading(false);
       }
