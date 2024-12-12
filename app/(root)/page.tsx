@@ -25,6 +25,7 @@ const HomePage = () => {
         );
 
         if (!response.ok) {
+          setError("Failed to fetch products");
           throw new Error("Failed to fetch products");
         }
 
