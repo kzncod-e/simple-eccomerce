@@ -62,7 +62,7 @@ export default function LoginPage() {
               Log In
             </Button>
             <div className="text-center text-sm">
-              Don't have an account?{" "}
+              Dont have an account?{" "}
               <Link className="text-blue-600 hover:underline" href="/register">
                 Sign up
               </Link>

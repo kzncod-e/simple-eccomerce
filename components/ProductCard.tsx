@@ -1,6 +1,6 @@
 "use client";
 import { myCart } from "@/db/models/Cart";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -17,8 +17,8 @@ import {
 import { updateQuantity } from "@/action/updateQuantityAction";
 
 const ProductCard = ({ products }: { products: myCart }) => {
-  if (!products) return null;
   const [quantity, setQuantity] = useState("");
+  if (!products) return null;
   return (
     <>
       {products?.productCarts?.map((product, index) => (
