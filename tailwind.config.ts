@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
 import animation from "tailwindcss-animate";
+
 export default {
   darkMode: ["class"],
   content: [
@@ -10,6 +11,9 @@ export default {
   ],
   theme: {
     extend: {
+      daisyui: {
+        themes: ["light", "dark", "cupcake"],
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -37,9 +41,7 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        daisyui: {
-          themes: ["light", "dark", "cupcake"],
-        },
+
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
