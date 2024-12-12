@@ -17,9 +17,12 @@ import Cards from "@/components/Cards";
 
 export default async function HomePage() {
   const fetchProduct = async () => {
-    const response = await fetch("http://localhost:3000/api/products", {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products`,
+      {
+        method: "GET",
+      }
+    );
     if (!response.ok) {
       throw new Error("fetch product failed");
     }

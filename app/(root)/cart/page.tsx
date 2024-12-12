@@ -20,11 +20,14 @@ export default async function CartPage() {
   const fetchProductCart = async () => {
     if (!userId) return;
     try {
-      const response = await fetch(`http://localhost:3000/api/cart/${userId}`, {
-        method: "GET",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/cart/${userId}`,
+        {
+          method: "GET",
 
-        cache: "no-store",
-      });
+          cache: "no-store",
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch cart items");
       }

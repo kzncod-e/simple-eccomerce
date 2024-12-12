@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 export const updateQuantity = async (productId: string, quantity: number) => {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/cart/${productId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/cart/${productId}`,
       {
         method: "PATCH",
         headers: {

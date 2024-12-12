@@ -21,7 +21,7 @@ export async function getTokenData(): Promise<payload> {
 }
 
 export const handleAddToCart = async (userId: string, productId: string) => {
-  const response = await fetch("http://localhost:3000/api/cart", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cart`, {
     method: "POST",
     body: JSON.stringify({ userId, productId }),
     headers: {

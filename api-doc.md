@@ -20,6 +20,8 @@ Error (400/404):
 
 
 
+
+
 2, API: User Registration
 URL: POST /api/register
 Headers: Content-Type: application/json
@@ -63,6 +65,10 @@ Copy code
   "error": "Internal Server Error"
 }
 
+
+
+
+
 3 API: Get Products
 URL: GET /api/products
 Description: Fetches a list of all available products.
@@ -70,7 +76,7 @@ Responses
 Success (200):
 
 json
-Copy code
+
 {
   "statusCode": 200,
   "message": "fetch products success",
@@ -96,9 +102,12 @@ Error (500):
   "error": "Internal Server Error"
 }
 
-    4, API: Add to Cart
-    URL: POST /api/cart
 
+
+
+4, API: Add to Cart
+    URL: POST /api/cart
+    body:
 {
   "userId": "userId123",
   "productId": "productId456"
@@ -178,6 +187,8 @@ Error (500):
 }
 
 
+
+
 6, DELETE - Delete Product from Cart
 URL: DELETE /api/cart/:userId
 Description: Removes a product from the user's cart.
@@ -201,6 +212,9 @@ Error (500):
   "message": "Internal Server Error",
   "error": "Error details"
 }
+
+
+
 
 7, PATCH - Update Product Quantity in Cart
 URL: PATCH /api/cart/:userId
