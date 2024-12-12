@@ -1,35 +1,44 @@
-import Link from "next/link";
-
+"use client";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
 import { MyResponse } from "@/db/models/User";
 import { Product } from "@/db/models/Product";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Cards from "@/components/Cards";
+import Link from "next/link";
 
-//   { name: "Electronics", image: "/placeholder.svg?height=300&width=400" },
-//   { name: "Clothing", image: "/placeholder.svg?height=300&width=400" },
-//   { name: "Home & Garden", image: "/placeholder.svg?height=300&width=400" },
-//   { name: "Sports & Outdoors", image: "/placeholder.svg?height=300&width=400" },
-// ];
+const HomePage = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default async function HomePage() {
-  const fetchProduct = async () => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products`,
-      {
-        method: "GET",
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/products`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+
+        const data: MyResponse<Product[]> = await response.json();
+        setProducts(data.data || []); // Ensure it's always an array
+      } catch (err) {
+        setError("Failed to load products");
+      } finally {
+        setLoading(false);
       }
-    );
-    if (!response.ok) {
-      throw new Error("fetch product failed");
-    }
-    const data: MyResponse<Product[]> = await response.json();
-    return data.data;
-  };
-  const products = await fetchProduct();
+    };
+
+    fetchProducts();
+  }, []); // Empty dependency array to run once on mount
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -56,6 +65,7 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
         <section
           id="featured-products"
           className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
@@ -63,12 +73,20 @@ export default async function HomePage() {
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
               Featured Products
             </h2>
-            <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {products &&
-                products.map((product) => (
+
+            {loading ? (
+              <div className="text-center text-gray-500">
+                Loading products...
+              </div>
+            ) : error ? (
+              <div className="text-center text-red-500">{error}</div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {products.map((product) => (
                   <Cards key={product._id.toString()} product={product} />
                 ))}
-            </div>
+              </div>
+            )}
           </div>
         </section>
 
@@ -101,4 +119,6 @@ export default async function HomePage() {
       <Footer />
     </div>
   );
-}
+};
+
+export default HomePage;
