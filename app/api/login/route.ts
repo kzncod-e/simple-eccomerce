@@ -6,7 +6,7 @@ import { findUser, MyResponse } from "@/db/models/User";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-export const UserInputLoginSchema = z.object({
+const UserInputLoginSchema = z.object({
   email: z.string().email().min(1, " email is required"),
   password: z.string().min(1, "password is required"),
 });
