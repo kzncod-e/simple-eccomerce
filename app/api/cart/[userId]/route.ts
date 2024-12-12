@@ -65,7 +65,7 @@ export const PATCH = async (
 ) => {
   try {
     const productId = (await params).userId;
-    console.log(productId, "ini product id di api>>>>>>>>>>>>>>>>");
+
     const { quantity } = await request.json();
 
     if (!quantity || typeof quantity !== "number") {

@@ -39,6 +39,8 @@ export const addToCart = async (cart: {
   userId: string;
   productId: string;
 }) => {
+  const cartCollection = await getCart();
+
   const currentDate = new Date().toISOString();
   const cartDoc = {
     userId: new ObjectId(cart.userId),
@@ -46,8 +48,8 @@ export const addToCart = async (cart: {
     createdAt: currentDate,
     updatedAt: currentDate,
   };
-  const Cart = (await getCart()).insertOne(cartDoc);
-  return Cart;
+  const newCart = cartCollection.insertOne(cartDoc);
+  return newCart;
 };
 export const getProductCart = async (userId: string): Promise<ProductCarts> => {
   const cart = await getCart();
