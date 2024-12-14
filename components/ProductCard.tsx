@@ -1,4 +1,6 @@
 "use client";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { myCart } from "@/db/models/Cart";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,7 +20,31 @@ import { updateQuantity } from "@/action/updateQuantityAction";
 
 const ProductCard = ({ products }: { products: myCart }) => {
   const [quantity, setQuantity] = useState("");
+  const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
+
+  const handleUpdateQuantity = async (productId: string, quantity: number) => {
+    try {
+      setLoadingProductId(productId); // Start loading state
+      await updateQuantity(productId, quantity);
+      toast("🦄 success update the product", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingProductId(null); // End loading state
+    }
+  };
+
   if (!products) return null;
+
   return (
     <>
       {products?.productCarts?.map((product, index) => (
@@ -55,10 +81,16 @@ const ProductCard = ({ products }: { products: myCart }) => {
                   <Button
                     className="self-end"
                     onClick={() =>
-                      updateQuantity(product._id.toString(), Number(quantity))
-                    }>
-                    {" "}
-                    update{" "}
+                      handleUpdateQuantity(
+                        product._id.toString(),
+                        Number(quantity)
+                      )
+                    }
+                    disabled={loadingProductId === product._id.toString()} // Disable while loading
+                  >
+                    {loadingProductId === product._id.toString()
+                      ? "Updating..."
+                      : "Update"}
                   </Button>
                 </div>
                 <p className="text-sm text-gray-500 mt-1">
@@ -77,6 +109,7 @@ const ProductCard = ({ products }: { products: myCart }) => {
           </Card>
         </div>
       ))}
+      <ToastContainer />
     </>
   );
 };

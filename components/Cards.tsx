@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,18 +22,34 @@ export interface payload {
 const Cards = ({ product }: { product: Product }) => {
   const [token, setToken] = useState<payload>();
   const [userId, setUserId] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const getToken = async () => {
     const Token: payload = await getTokenData();
     setToken(Token);
   };
+
   useEffect(() => {
     getToken();
   }, []);
+
   useEffect(() => {
     if (token) {
       setUserId(token.id);
     }
   }, [token]);
+
+  const AddToCart = async (userId: string, productId: string) => {
+    try {
+      setLoading(true); // Start loading
+      toast.success("Product added to cart");
+      await handleAddToCart(userId, productId);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
 
   return (
     <>
@@ -54,9 +71,11 @@ const Cards = ({ product }: { product: Product }) => {
         </CardContent>
         <CardFooter>
           <Button
-            onClick={() => handleAddToCart(userId, product._id.toString())}
-            className="w-full">
-            Add to Cart
+            onClick={() => AddToCart(userId, product._id.toString())}
+            className="w-full"
+            disabled={loading} // Disable button while loading
+          >
+            {loading ? "Adding..." : "Add to Cart"}
           </Button>
         </CardFooter>
       </Card>

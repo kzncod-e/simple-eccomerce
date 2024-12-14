@@ -1,4 +1,6 @@
 "use client";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,6 +120,7 @@ const HomePage = () => {
         </section>
       </main>
       <Footer />
+      <ToastContainer />
     </div>
   );
 };
