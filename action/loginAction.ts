@@ -25,6 +25,7 @@ export const handelFormAction = async ({
       },
     }
   );
+
   const responseJson: MyResponse<string | undefined> = await response.json();
   if (!response.ok) {
     const message = responseJson.error ?? "something went wrong";
